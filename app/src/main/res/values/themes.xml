@@ -13,13 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
     <style name="Theme.ShareAndCare.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
     <style name="Theme.ShareAndCare.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="Theme.ShareAndCare.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
