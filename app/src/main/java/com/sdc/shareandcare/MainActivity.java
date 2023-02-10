@@ -1,70 +1,135 @@
 package com.sdc.shareandcare;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import com.sdc.shareandcare.databinding.ActivityMainBinding;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.manandhiman.sdcproject.databinding.ActivityMainBinding;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
-private ActivityMainBinding binding;
+    Uri uri;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
+    ActivityMainBinding binding;
+    ProgressDialog progressDialog;
+
+
+    private static final int REQUEST_CODE_SELECT_MEDIA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-     binding = ActivityMainBinding.inflate(getLayoutInflater());
-     setContentView(binding.getRoot());
+        binding.buttonSelectMedia.setOnClickListener(v -> selectMedia("image/*"));
+        binding.buttonUploadMedia.setOnClickListener(v -> uploadMedia());
 
-        setSupportActionBar(binding.toolbar);
+        progressDialog = new ProgressDialog(this);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        binding.viewAll.setOnClickListener(v -> activityShowAll());
     }
-@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+
+    private void activityShowAll() {
+        Intent i = new Intent(this, UploadedMediaActivity.class);
+        startActivity(i);
+    }
+
+    private void selectMedia(String mimeType) {
+
+        binding.imageView.setVisibility(View.VISIBLE);
+        ImageView imageView = findViewById(R.id.imageView);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.your_image);
+        imageView.setImageBitmap(bitmap);
+
+
+        Intent intent = new Intent();
+        intent.setType(mimeType);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intent, "Select Media"), 101);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(data !=null && data.getData() != null){
+            uri = data.getData();
+            if(requestCode == 101){
+                binding.imageView.setImageURI(uri);
+            }
+
+        }
+        binding.buttonUploadMedia.setVisibility(View.VISIBLE);
+        binding.editText.setVisibility(View.VISIBLE);
+    }
+
+    private void uploadMedia() {
+        if(uri == null){
+            Toast.makeText(this, "Please Select a File to Upload", Toast.LENGTH_SHORT).show();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            finish();
+            startActivity(getIntent());
+            return;
         }
 
-        return super.onOptionsItemSelected(item);
+        progressDialog.setTitle("Uploading");
+        progressDialog.setMessage("Please wait while we upload the selected media");
+        progressDialog.show();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        Date currentDate = new Date();
+        String fileName = format.format(currentDate);
+
+        storageReference = FirebaseStorage.getInstance().getReference("image/"+fileName);
+        databaseReference = FirebaseDatabase.getInstance().getReference("notes");
+
+        Post post = new Post();
+        post.setNote(binding.editText.getText().toString());
+        post.setUrl(fileName);
+
+        databaseReference.child(String.valueOf(System.currentTimeMillis()/1000)).setValue(post);
+
+
+        storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+            binding.imageView.setImageURI(null);
+            Toast.makeText(MainActivity.this,"File Uploaded Successfully", Toast.LENGTH_SHORT).show();
+            hideAllViews();
+            progressDialog.dismiss();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(MainActivity.this,"Failed to Upload",Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+        });
+        uri = null;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    private void hideAllViews(){
+        binding.imageView.setVisibility(View.GONE);
     }
+
 }
