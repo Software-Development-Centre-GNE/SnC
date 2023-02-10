@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "249679176872",
+    "project_id": "share-and-care-b6a68",
+    "storage_bucket": "share-and-care-b6a68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249679176872:android:c00358ab6c64fe5d380e9d",
+        "android_client_info": {
+          "package_name": "com.sdc.shareandcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249679176872-901ogbp4g0nuefr6vusrqku4nusdltf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8QavKDZfwjttRTjOQWijeqV2D5m7W3gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249679176872-901ogbp4g0nuefr6vusrqku4nusdltf5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
