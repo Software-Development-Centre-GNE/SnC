@@ -10,21 +10,21 @@ To use the application, follow these steps:
 - Open the project in Android Studio.
 - Build the project and run it on a device or emulator.
 - Connect to Firebase.
-- 
+
 ## Features
 
 - Upload images.
 - Add notes to images.
 - View uploaded images.
 - View images by tag
-- 
+
 ## How to use
 
 1. Click the "Select Media" button to choose an image to upload.
 2. Add a tag and a note to the image, if desired.
 3. Click the "Upload" button to upload the image to Firebase.
 To view an image, click on the tag associated with the image.
-4. 
+
 ## Contributing
 
 Contributions are welcome! If you find a bug or want to add a new feature, create an issue or submit a pull request.
