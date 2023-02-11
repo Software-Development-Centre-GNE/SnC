@@ -23,7 +23,7 @@ To use the application, follow these steps:
 1. Click the "Select Media" button to choose an image to upload.
 2. Add a tag and a note to the image, if desired.
 3. Click the "Upload" button to upload the image to Firebase.
-To view an image, click on the tag associated with the image.
+4. To view an image, click on the tag associated with the image.
 
 ## Contributing
 
