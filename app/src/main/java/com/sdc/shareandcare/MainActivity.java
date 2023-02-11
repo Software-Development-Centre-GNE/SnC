@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(Intent.createChooser(intent, "Select Media"), 101);
+        binding.buttonSelectMedia.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -90,9 +92,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please Select a File to Upload", Toast.LENGTH_SHORT).show();
             try {
                 Thread.sleep(1000);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             finish();
             startActivity(getIntent());
             return;
