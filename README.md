@@ -6,7 +6,7 @@ This is an Android application that allows users to upload and view images with 
 
 To use the application, follow these steps:
 
-- Clone the repository: `git clone https://github.com/geekabhinav007/SnC.git`
+- Clone the repository: `git clone https://github.com/Software-Development-Centre-GNE/SnC.git`
 - Open the project in Android Studio.
 - Build the project and run it on a device or emulator.
 - Connect to Firebase.
@@ -35,5 +35,4 @@ This project is licensed under the MIT License. See the LICENSE file for more in
 
 ## Contact
 
-If you have any questions or concerns, please contact me at abhinav26january@gamil.com.
-
+If you have any questions or concerns, please contact at sdc@gndec.ac.in
