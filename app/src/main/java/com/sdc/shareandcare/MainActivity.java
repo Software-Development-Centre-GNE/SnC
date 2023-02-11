@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"File Uploaded Successfully", Toast.LENGTH_SHORT).show();
             hideAllViews();
             progressDialog.dismiss();
+            binding.editText.setText("");
         }).addOnFailureListener(e -> {
             Toast.makeText(MainActivity.this,"Failed to Upload",Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
