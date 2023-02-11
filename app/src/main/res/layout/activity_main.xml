@@ -24,16 +24,14 @@
         android:id="@+id/buttonSelectMedia"
         android:layout_width="164dp"
         android:layout_height="49dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="580dp"
+        android:layout_marginTop="62dp"
         android:background="#3C84AB"
         android:text="Select Media"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:ignore="MissingConstraints" />
-
+        tools:ignore="MissingConstraints"
+        tools:visibility="visible"/>
 
     <Button
         android:id="@+id/buttonUploadMedia"
