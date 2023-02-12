@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding.buttonSelectMedia.setOnClickListener(v -> selectMedia("image/*"));
         binding.buttonUploadMedia.setOnClickListener(v -> uploadMedia());
-
         progressDialog = new ProgressDialog(this);
 
         binding.viewAll.setOnClickListener(v -> activityShowAll());
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(Intent.createChooser(intent, "Select Media"), 101);
         binding.buttonSelectMedia.setVisibility(View.GONE);
-
+        
     }
 
     @Override
@@ -77,16 +77,21 @@ public class MainActivity extends AppCompatActivity {
 
         if(data !=null && data.getData() != null){
             uri = data.getData();
-            if(requestCode == 101){
+            if(requestCode == 101) {
                 binding.imageView.setImageURI(uri);
-            }
 
+                binding.buttonUploadMedia.setVisibility(View.VISIBLE);
+                binding.editText.setVisibility(View.VISIBLE);
+            }
         }
-        binding.buttonUploadMedia.setVisibility(View.VISIBLE);
-        binding.editText.setVisibility(View.VISIBLE);
+        else{
+            binding.buttonSelectMedia.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void uploadMedia() {
+
         if(uri == null){
             Toast.makeText(this, "Please Select a File to Upload", Toast.LENGTH_SHORT).show();
             try {
@@ -101,35 +106,40 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        progressDialog.setTitle("Uploading");
-        progressDialog.setMessage("Please wait while we upload the selected media");
-        progressDialog.show();
+        Toast.makeText(MainActivity.this,"Please Enter Title",Toast.LENGTH_SHORT).show();
+        EditText editText = findViewById(R.id.editText);
+        String text = editText.getText().toString().trim();
+        if(text.length() != 0){
+            progressDialog.setTitle("Uploading");
+            progressDialog.setMessage("Please wait while we upload the selected media");
+            progressDialog.show();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        Date currentDate = new Date();
-        String fileName = format.format(currentDate);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            Date currentDate = new Date();
+            String fileName = format.format(currentDate);
 
-        storageReference = FirebaseStorage.getInstance().getReference("image/"+fileName);
-        databaseReference = FirebaseDatabase.getInstance().getReference("notes");
+            storageReference = FirebaseStorage.getInstance().getReference("image/"+fileName);
+            databaseReference = FirebaseDatabase.getInstance().getReference("notes");
 
-        Post post = new Post();
-        post.setNote(binding.editText.getText().toString());
-        post.setUrl(fileName);
+            Post post = new Post();
+            post.setNote(binding.editText.getText().toString());
+            post.setUrl(fileName);
 
-        databaseReference.child(String.valueOf(System.currentTimeMillis()/1000)).setValue(post);
+            databaseReference.child(String.valueOf(System.currentTimeMillis()/1000)).setValue(post);
 
 
-        storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
-            binding.imageView.setImageURI(null);
-            Toast.makeText(MainActivity.this,"File Uploaded Successfully", Toast.LENGTH_SHORT).show();
-            hideAllViews();
-            progressDialog.dismiss();
-            binding.editText.setText("");
-        }).addOnFailureListener(e -> {
-            Toast.makeText(MainActivity.this,"Failed to Upload",Toast.LENGTH_SHORT).show();
-            progressDialog.dismiss();
-        });
-        uri = null;
+            storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                binding.imageView.setImageURI(null);
+                Toast.makeText(MainActivity.this,"File Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                hideAllViews();
+                progressDialog.dismiss();
+                binding.editText.setText("");
+            }).addOnFailureListener(e -> {
+                Toast.makeText(MainActivity.this,"Failed to Upload",Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            });
+            uri = null;
+        }
     }
 
     private void hideAllViews(){
