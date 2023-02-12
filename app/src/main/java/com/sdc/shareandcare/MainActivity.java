@@ -19,7 +19,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.sdc.shareandcare.databinding.ActivityMainBinding;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -135,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void hideAllViews(){
         binding.imageView.setVisibility(View.GONE);
+        binding.buttonSelectMedia.setVisibility(View.VISIBLE);
+        binding.buttonUploadMedia.setVisibility(View.GONE);
+        binding.editText.setVisibility(View.GONE);
     }
 
 }
