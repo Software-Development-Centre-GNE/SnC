@@ -76,10 +76,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
         });
     }
-
-
-
-
+    
     private void openMediaInWebView(Uri uri) {
         Intent i = new Intent(context, WebViewActivity.class);
         i.putExtra("uri",uri);

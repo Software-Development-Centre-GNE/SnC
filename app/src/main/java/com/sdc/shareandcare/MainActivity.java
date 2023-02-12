@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -41,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         binding.buttonSelectMedia.setOnClickListener(v -> selectMedia("image/*"));
+        binding.buttonSelectVideo.setOnClickListener(v -> selectMedia("video/*"));
+
+
+
+
         binding.buttonUploadMedia.setOnClickListener(v -> uploadMedia());
         progressDialog = new ProgressDialog(this);
 
@@ -55,20 +63,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectMedia(String mimeType) {
+        System.out.println("I am mimeType " + mimeType);
+        int code = 0;
+        switch (mimeType){
+            case "image/*":
+                code = 100;
+                binding.imageView.setVisibility(View.VISIBLE);
+                ImageView imageView = findViewById(R.id.imageView);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.your_image);
+                imageView.setImageBitmap(bitmap);
+                break;
+            case "video/*":
+                code = 101;
+                binding.videoView.setVisibility(View.VISIBLE);
+                MediaController mediaController = new MediaController(this);
+                mediaController.setAnchorView(binding.videoView);
+                binding.videoView.setMediaController(mediaController);
+                break;
+        }
 
-        binding.imageView.setVisibility(View.VISIBLE);
-        ImageView imageView = findViewById(R.id.imageView);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.your_image);
-        imageView.setImageBitmap(bitmap);
-
-
-        Intent intent = new Intent();
-        intent.setType(mimeType);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent, "Select Media"), 101);
+        intent.setType(mimeType);
+//        String[] mimetypes = {"image/*", "video/*"};
+//        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        startActivityForResult(intent, code);
         binding.buttonSelectMedia.setVisibility(View.GONE);
-        
+        binding.buttonSelectVideo.setVisibility(View.GONE);
+
+
+//        binding.imageView.setVisibility(View.VISIBLE);
+//        ImageView imageView = findViewById(R.id.imageView);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.your_image);
+//        imageView.setImageBitmap(bitmap);
+//
+//        Intent intent = new Intent();
+//        intent.setType(mimeType);
+//        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        startActivityForResult(Intent.createChooser(intent, "Select Media"), code);
+//        binding.buttonSelectMedia.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -77,15 +113,21 @@ public class MainActivity extends AppCompatActivity {
 
         if(data !=null && data.getData() != null){
             uri = data.getData();
-            if(requestCode == 101) {
+            if(requestCode == 100) {
                 binding.imageView.setImageURI(uri);
 
+                binding.buttonUploadMedia.setVisibility(View.VISIBLE);
+                binding.editText.setVisibility(View.VISIBLE);
+            }
+            else if(requestCode == 101){
+                binding.videoView.setVideoURI(uri);
                 binding.buttonUploadMedia.setVisibility(View.VISIBLE);
                 binding.editText.setVisibility(View.VISIBLE);
             }
         }
         else{
             binding.buttonSelectMedia.setVisibility(View.VISIBLE);
+            binding.buttonSelectVideo.setVisibility(View.VISIBLE);
         }
 
     }
@@ -145,8 +187,10 @@ public class MainActivity extends AppCompatActivity {
     private void hideAllViews(){
         binding.imageView.setVisibility(View.GONE);
         binding.buttonSelectMedia.setVisibility(View.VISIBLE);
+        binding.buttonSelectVideo.setVisibility(View.VISIBLE);
         binding.buttonUploadMedia.setVisibility(View.GONE);
         binding.editText.setVisibility(View.GONE);
+        binding.videoView.setVisibility(View.GONE);
     }
 
 }

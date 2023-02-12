@@ -12,10 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Create Notes."
+        android:text="Create Notes"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,14 +25,31 @@
         android:id="@+id/buttonSelectMedia"
         android:layout_width="164dp"
         android:layout_height="49dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="61dp"
         android:background="#3C84AB"
-        android:text="Select Media"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Select Image"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:ignore="MissingConstraints"
-        tools:visibility="visible"/>
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/buttonSelectVideo"
+        android:layout_width="164dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginEnd="30dp"
+        android:background="#3C84AB"
+        android:text="Select Video"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectMedia"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/buttonUploadMedia"
@@ -55,11 +73,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:minEms="1"
         android:gravity="start|top"
         android:hint="Enter Title"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
+        android:minEms="1"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonUploadMedia"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +97,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSelectMedia"
+        tools:visibility="visible" />
+
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.682"
         tools:visibility="visible" />
 
     <Button
