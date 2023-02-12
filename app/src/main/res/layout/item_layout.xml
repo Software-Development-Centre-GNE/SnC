@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#abbbc4"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    android:background="#abbbc4"
     android:padding="4dp">
 
     <TextView
@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
+        android:maxLength="30"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -22,14 +23,26 @@
         app:layout_constraintVertical_bias="0.506" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageButton"
         android:layout_width="24dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="28dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
         android:background="#abbbc4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_bias="0.555"
         app:srcCompat="@android:drawable/ic_dialog_info" />
+
+    <ImageButton
+        android:id="@+id/imageView2"
+        android:layout_width="24dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.555"
+        app:srcCompat="@android:drawable/ic_menu_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
