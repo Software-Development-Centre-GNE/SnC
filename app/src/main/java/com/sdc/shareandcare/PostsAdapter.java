@@ -2,7 +2,6 @@ package com.sdc.shareandcare;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
@@ -17,9 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +27,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>  {
