@@ -64,36 +64,45 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
     }
 
+
     // Assume the Post object is passed to this Activity or Fragment as an argument called "post"
     private void showAddDescriptionDialog(Post post) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Add Description");
 
-        // Set up the input field
-        final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setHint("Enter description here");
-        input.setText(post.getDescription());
-        builder.setView(input);
+        // Inflate the dialog layout file
+        View dialogLayout = LayoutInflater.from(context).inflate(R.layout.dialog_add_description, null);
+        builder.setView(dialogLayout);
 
-        // Set up the buttons
+        // Get a reference to the EditText in the dialog layout file
+        EditText descriptionEditText = dialogLayout.findViewById(R.id.description_edit_text);
+        //  input.setInputType(InputType.TYPE_CLASS_TEXT);
+        descriptionEditText.setHint("Enter description here");
+        descriptionEditText.setText(post.getDescription());
+        // builder.setView(descriptionEditText);
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String description = input.getText().toString();
+                String description = descriptionEditText.getText().toString();
                 post.setDescription(description);
                 saveDescriptionToFirebase(post);
             }
         });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                dialog.dismiss();
             }
         });
 
-        // Show the dialog box
         AlertDialog dialog = builder.create();
+
+        // Set the maximum width of the TextView in the dialog layout file
+        //   int maxWidth = context.getResources().getDimensionPixelSize(R.dimen.dialog_max_width);
+        TextView textView = dialogLayout.findViewById(R.id.description_text_view);
+        textView.setMaxWidth(200);
+
         dialog.show();
     }
 
