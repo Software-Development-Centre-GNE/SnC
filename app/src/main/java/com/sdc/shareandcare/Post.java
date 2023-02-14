@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Post implements Parcelable {
-    private String url, note;
+    private String url, note , description;
 
     public Post() {
 
@@ -55,4 +55,14 @@ public class Post implements Parcelable {
         dest.writeString(url);
         dest.writeString(note);
     }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
