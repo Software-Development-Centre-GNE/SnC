@@ -1,19 +1,19 @@
 package com.sdc.shareandcare;
 
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +22,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>  {
 
@@ -41,8 +43,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         final Post post = postsArrayList.get(position);
 
         holder.textView.setText(post.getNote());
-
-        holder.itemView.setOnClickListener(v -> downloadFile(post));
+        holder.imageView.setOnClickListener(v -> downloadFile(post));
 
     }
     private void downloadFile(Post post) {
@@ -54,20 +55,30 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             @Override
             public void onSuccess(Uri uri) {
                 Log.v("Down", uri.toString());
+                String url = uri.toString();
+
 
                 // Create an Intent to view the downloaded image
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(uri, "image/*");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setDataAndType(uri, "image/*");
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
 
                 // Start the activity to view the downloaded image
-                try {
-                    context.startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    // Handle the case where no app is available to view the image
-                    Log.e("DownloadError", "No app available to view image: " + e.getMessage());
-                }
+//                try {
+////                    context.startActivity(intent);
+//                } catch (ActivityNotFoundException e) {
+//                    // Handle the case where no app is available to view the image
+//                    Log.e("DownloadError", "No app available to view image: " + e.getMessage());
+//                }
+
+//               Generating a random number for FileName
+                String hexRandom = getRandomHexString(3);
+                String Filename = "Snc_" + hexRandom;
+//              method to download
+                downloadFiles(context, Filename, DIRECTORY_DOWNLOADS, url);
             }
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -75,6 +86,26 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Log.e("DownloadError", exception.getMessage());
             }
         });
+    }
+
+//    This method will download files by requesting a system download manager
+    public void downloadFiles(Context context, String FileName, String destinationDirectory, String url ){
+        DownloadManager downloadManager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, FileName);
+        downloadManager.enqueue(request);
+
+    }
+    private String getRandomHexString(int range){
+        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
+        while(sb.length() < range){
+            sb.append(Integer.toHexString(r.nextInt()));
+        }
+
+        return sb.toString().substring(0, range);
     }
     
     private void openMediaInWebView(Uri uri) {
@@ -91,11 +122,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
         TextView textView;
 
         public ViewHolder(@NonNull View view){
             super(view);
             textView = view.findViewById(R.id.textView2);
+            imageView = view.findViewById(R.id.imageView2);
         }
     }
     public PostsAdapter(Context context, ArrayList<Post> postsArrayList){
