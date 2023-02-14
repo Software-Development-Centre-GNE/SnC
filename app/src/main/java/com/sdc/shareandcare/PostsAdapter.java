@@ -1,7 +1,13 @@
 package com.sdc.shareandcare;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
-
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.text.InputType;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.widget.ImageView;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,12 +46,75 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+
+    private void saveDescriptionToFirebase(Post post) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").child(post.getUrl());
+        databaseRef.child("description").setValue(post.getDescription())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Firebase", "Description saved to Firebase");
+                        // show a message to the user to indicate that the description has been saved
+                        Toast.makeText(context, "Description saved", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firebase", "Error saving description to Firebase: " + e.getMessage());
+                        // show a message to the user to indicate that there was an error saving the description
+                        Toast.makeText(context, "Error saving description", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    // Assume the Post object is passed to this Activity or Fragment as an argument called "post"
+    private void showAddDescriptionDialog(Post post) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Add Description");
+
+        // Set up the input field
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setHint("Enter description here");
+        input.setText(post.getDescription());
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String description = input.getText().toString();
+                post.setDescription(description);
+                saveDescriptionToFirebase(post);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the dialog box
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder holder, int position) {
         final Post post = postsArrayList.get(position);
 
         holder.textView.setText(post.getNote());
         holder.imageView.setOnClickListener(v -> downloadFile(post));
+
+        holder.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddDescriptionDialog(post);
+            }
+        });
+
 
     }
     private void downloadFile(Post post) {
@@ -88,6 +159,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         });
     }
 
+    private void showDescriptionDialog(String description) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Description");
+        builder.setMessage(description);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 //    This method will download files by requesting a system download manager
     public void downloadFiles(Context context, String FileName, String destinationDirectory, String url ){
         DownloadManager downloadManager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -123,11 +208,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+        public View addButton;
         TextView textView;
 
         public ViewHolder(@NonNull View view){
             super(view);
             textView = view.findViewById(R.id.textView2);
+            addButton = view.findViewById(R.id.imageButton);
             imageView = view.findViewById(R.id.imageView2);
         }
     }
