@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ProgressDialog progressDialog;
 
-
     private static final int REQUEST_CODE_SELECT_MEDIA = 1;
 
     @Override
@@ -43,11 +43,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         binding.buttonSelectMedia.setOnClickListener(v -> selectMedia("image/*"));
         binding.buttonSelectVideo.setOnClickListener(v -> selectMedia("video/*"));
-
-
 
 
         binding.buttonUploadMedia.setOnClickListener(v -> uploadMedia());
