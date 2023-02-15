@@ -166,7 +166,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private void showDescriptionDialog(String description) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Description");
+        builder.setTitle("");
         builder.setMessage(description);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
