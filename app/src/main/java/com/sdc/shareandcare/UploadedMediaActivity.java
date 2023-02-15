@@ -56,19 +56,24 @@ public class UploadedMediaActivity extends AppCompatActivity {
                 for (DataSnapshot childDataSnapshot : snapshot.getChildren()) {
 
                     Map<String, Object> map = (HashMap<String, Object>) childDataSnapshot.getValue();
-                    if (map==null){
+                    if (map == null) {
                         Toast.makeText(UploadedMediaActivity.this, "No Existing Media", Toast.LENGTH_SHORT).show();
                     }
+                    if (map != null) {
+                        String url = (String) map.get("url");
+                        if (url != null) {
+                            Post post = new Post();
+                            post.setUrl(url);
+                            String note = (String) map.get("note");
+                            if (note != null) {
+                                post.setNote(note);
+                            } else {
+                                post.setNote("No Note with this Media");
+                            }
 
-                    Post post = new Post();
-                    post.setUrl(map.get("url").toString());
-                    try {
-                        post.setNote(map.get("note").toString());
-                    }catch (NullPointerException e){
-                        post.setNote("No Note with this Media");
+                            postsArrayList.add(post);
+                        }
                     }
-
-                    postsArrayList.add(post);
                 }
                 postsAdapter = new PostsAdapter(UploadedMediaActivity.this, postsArrayList);
                 binding.recyclerView.setAdapter(postsAdapter);

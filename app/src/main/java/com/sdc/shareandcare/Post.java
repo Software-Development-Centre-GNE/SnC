@@ -5,8 +5,10 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.database.DataSnapshot;
+
 public class Post implements Parcelable {
-    private String url, note, description;
+    private String url, note, description , id;
 
     public Post() {
 
@@ -31,6 +33,9 @@ public class Post implements Parcelable {
     protected Post(Parcel in) {
         note = in.readString();
         url = in.readString();
+        id = in.readString();
+        description = in.readString(); // Added this line
+
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
@@ -54,6 +59,19 @@ public class Post implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(url);
         dest.writeString(note);
+        dest.writeString(id);
+        dest.writeString(description);
+    }
+    public String getId() {
+        return id;
+    }
+    public static long getTimestamp() {
+        return System.currentTimeMillis();
+    }
+
+    // Added method to get the Firebase key
+    public String getFirebaseKey() {
+        return id;
     }
 
     // Added 2 functions
