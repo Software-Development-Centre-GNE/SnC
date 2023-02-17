@@ -61,7 +61,11 @@ public class UploadedMediaActivity extends AppCompatActivity {
                     }
 
                     Post post = new Post();
-                    post.setUrl(map.get("url").toString());
+                   try {
+                        post.setUrl(map.get("url").toString());
+                    }catch(NullPointerException e){
+
+                    }
                     try {
                         post.setNote(map.get("note").toString());
                     }catch (NullPointerException e){
