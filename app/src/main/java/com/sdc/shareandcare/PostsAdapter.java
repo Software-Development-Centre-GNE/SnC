@@ -18,7 +18,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import java.util.Map;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +47,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
 
     private void saveDescriptionToFirebase(Post post) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("posts").child(post.getUrl());
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("descriptions/").child(post.getUrl());
         databaseRef.child("description").setValue(post.getDescription())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -64,6 +67,43 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
     }
 
+    private void loadDescriptionFromFirebase(Post post, TextView textView) {
+
+        if (post != null && post.getUrl() != null) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference().child("descriptions/").child(post.getUrl());
+
+            DatabaseReference descriptionRef = FirebaseDatabase.getInstance().getReference("descriptions/").child(post.getUrl());
+
+            descriptionRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Map<String, Object> postMap = (Map<String, Object>) snapshot.getValue();
+
+                        if (postMap != null) {
+                            String description = (String) postMap.get("description");
+                            if (description != null) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.setMessage(description)
+                                        .setTitle("Description")
+                                        .setPositiveButton("OK", null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                                // post.setDescription(description);
+                                // showAddDescriptionDialog(post);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle the error
+                }
+            });
+        }
+    }
 
     // Assume the Post object is passed to this Activity or Fragment as an argument called "post"
     private void showAddDescriptionDialog(Post post) {
@@ -116,6 +156,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (post != null) {
+                    TextView textView = holder.textView;
+                    loadDescriptionFromFirebase(post, textView);
+                }
                 showAddDescriptionDialog(post);
             }
         });
