@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(MainActivity.this,"Please Enter Title",Toast.LENGTH_SHORT).show();
+//
         EditText editText = findViewById(R.id.editText);
         String text = editText.getText().toString().trim();
         if(text.length() != 0){
@@ -178,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             });
             uri = null;
+        }
+        else{
+            Toast.makeText(MainActivity.this,"Please Enter Title",Toast.LENGTH_SHORT).show();
         }
     }
 
