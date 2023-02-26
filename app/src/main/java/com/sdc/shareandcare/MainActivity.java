@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.buttonSelectMedia.setOnClickListener(v -> selectMedia("image/*"));
         binding.buttonSelectVideo.setOnClickListener(v -> selectMedia("video/*"));
+        binding.buttonSelectAudio.setOnClickListener(v -> selectMedia("audio/*"));
 
 
         binding.buttonUploadMedia.setOnClickListener(v -> uploadMedia());
@@ -77,6 +80,30 @@ public class MainActivity extends AppCompatActivity {
                 mediaController.setAnchorView(binding.videoView);
                 binding.videoView.setMediaController(mediaController);
                 break;
+            case "audio/*":
+                code = 102;
+//                binding.audioView.setVisibility(View.VISIBLE);
+//                MediaPlayer mediaPlayer = new MediaPlayer();
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    mediaPlayer.setAudioAttributes(new AudioAttributes.Builder()
+//                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                            .setUsage(AudioAttributes.USAGE_MEDIA)
+//                            .build());
+//                }
+//                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+//                        mp.start();
+//                    }
+//                });
+//                try {
+//                    Uri audioUri = data.getData();
+//                    mediaPlayer.setDataSource(getApplicationContext(), audioUri);
+//                    mediaPlayer.prepareAsync();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+                break;
         }
 
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -88,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, code);
         binding.buttonSelectMedia.setVisibility(View.GONE);
         binding.buttonSelectVideo.setVisibility(View.GONE);
+        binding.buttonSelectAudio.setVisibility(View.GONE);
 
 
 //        binding.imageView.setVisibility(View.VISIBLE);
@@ -121,10 +149,15 @@ public class MainActivity extends AppCompatActivity {
                 binding.buttonUploadMedia.setVisibility(View.VISIBLE);
                 binding.editText.setVisibility(View.VISIBLE);
             }
+            else if(requestCode == 102 ){
+                binding.buttonUploadMedia.setVisibility(View.VISIBLE);
+                binding.editText.setVisibility(View.VISIBLE);
+            }
         }
         else{
             binding.buttonSelectMedia.setVisibility(View.VISIBLE);
             binding.buttonSelectVideo.setVisibility(View.VISIBLE);
+            binding.buttonSelectAudio.setVisibility(View.VISIBLE);
         }
 
     }
@@ -188,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         binding.imageView.setVisibility(View.GONE);
         binding.buttonSelectMedia.setVisibility(View.VISIBLE);
         binding.buttonSelectVideo.setVisibility(View.VISIBLE);
+        binding.buttonSelectAudio.setVisibility(View.VISIBLE);
         binding.buttonUploadMedia.setVisibility(View.GONE);
         binding.editText.setVisibility(View.GONE);
         binding.videoView.setVisibility(View.GONE);
