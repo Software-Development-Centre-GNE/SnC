@@ -12,37 +12,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Create Notes"
+        android:text="@string/create_notes"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
+    <ImageView
         android:id="@+id/buttonSelectMedia"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="61dp"
-        android:background="#3C84AB"
-        android:text="Select Image"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        app:srcCompat="@drawable/baseline_image_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
 
-    <Button
+    <ImageView
         android:id="@+id/buttonSelectVideo"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="61dp"
-        android:layout_marginEnd="15dp"
-        android:background="#3C84AB"
-        android:text="Select Video"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        app:srcCompat="@drawable/baseline_videocam_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -53,20 +50,21 @@
 
     <Button
         android:id="@+id/buttonUploadMedia"
-        android:layout_width="164dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="512dp"
+        android:layout_width="157dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="420dp"
         android:background="#3C84AB"
-        android:text="Upload Media"
+        android:text="@string/upload_media"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.536"
+        app:layout_constraintVertical_bias="0.537"
         tools:ignore="MissingConstraints"
         tools:visibility="visible" />
+
 
     <EditText
         android:id="@+id/editText"
@@ -74,19 +72,19 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Enter Title"
+        android:hint="@string/enter_title"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:minEms="1"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/buttonUploadMedia"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
         tools:visibility="visible" />
-
 
     <ImageView
         android:id="@+id/imageView"
@@ -99,18 +97,16 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonSelectMedia"
         tools:visibility="visible" />
 
-
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_width="709dp"
+        android:layout_height="236dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.682"
+        app:layout_constraintVertical_bias="0.535"
         tools:visibility="visible" />
 
     <Button
