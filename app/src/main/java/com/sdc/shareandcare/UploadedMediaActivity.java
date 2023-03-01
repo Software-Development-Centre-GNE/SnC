@@ -64,9 +64,13 @@ public class UploadedMediaActivity extends AppCompatActivity {
                         if (url != null) {
                             Post post = new Post();
                             post.setUrl(url);
+
                             String note = (String) map.get("note");
                             if (note != null) {
+                                String noteId = databaseReference.push().getKey();
+                                post.setId(noteId);
                                 post.setNote(note);
+                                System.out.println(post);
                             } else {
                                 post.setNote("No Note with this Media");
                             }

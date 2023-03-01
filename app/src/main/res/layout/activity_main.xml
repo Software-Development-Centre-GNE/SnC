@@ -23,12 +23,12 @@
     <ImageView
         android:id="@+id/buttonSelectMedia"
         android:layout_width="50dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonSelectMedia"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
@@ -38,7 +38,7 @@
     <ImageView
         android:id="@+id/buttonSelectAudio"
         android:layout_width="50dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonSelectVideo"
@@ -51,16 +51,30 @@
     <ImageView
         android:id="@+id/buttonSelectVideo"
         android:layout_width="50dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
         app:srcCompat="@drawable/baseline_videocam_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/buttonSelectMedia"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectAudio"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSelectCamera"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/buttonSelectCamera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonSelectVideo"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/baseline_camera_alt_24"
         tools:visibility="visible" />
 
     <Button
@@ -114,7 +128,7 @@
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="709dp"
+        android:layout_width="410dp"
         android:layout_height="236dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/editText"
