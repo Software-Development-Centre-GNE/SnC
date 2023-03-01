@@ -225,7 +225,7 @@ private Uri photoURI;
 //            content://com.example.android.fileprovider/external_files/Android/data/com.sdc.shareandcare/files/Pictures/JPEG_20230301_070604_7707464152446643116.jpg
 //            content://com.android.providers.media.documents/document/image%3A498483
 
-                System.out.println("photoURI    " + photoURI);
+//                System.out.println("photoURI    " + photoURI);
             // Convert URI to Bitmap
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoURI);
