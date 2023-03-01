@@ -21,6 +21,9 @@ public class Post implements Parcelable {
     public void setUrl(String url) {
         this.url = url;
     }
+    public void setId(String id){
+        this.id = id;
+    }
 
     public String getNote() {
         return note;
