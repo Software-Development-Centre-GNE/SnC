@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="#abbbc4"
+    android:background="#99BBFF"
     android:padding="4dp">
 
     <TextView
@@ -15,6 +15,7 @@
         android:layout_marginStart="28dp"
         android:maxLength="30"
         android:text="TextView"
+        android:textColor="#333333"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -25,23 +26,22 @@
     <ImageView
         android:id="@+id/imageButton"
         android:layout_width="24dp"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:background="#abbbc4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@android:drawable/ic_dialog_info" />
+        app:srcCompat="@drawable/baseline_description_24" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imageView2"
         android:layout_width="24dp"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@android:drawable/stat_sys_download" />
+        app:srcCompat="@drawable/baseline_download_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>
